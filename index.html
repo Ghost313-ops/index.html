@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Just US – Login</title>
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #fff0f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .box {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      width: 320px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    input, button {
+      width: 100%;
+      margin-top: 10px;
+      padding: 10px;
+    }
+    button {
+      background: #ff5c8a;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h2>The Story of US 💌</h2>
+  <input id="email" type="email" placeholder="Email" />
+  <input id="password" type="password" placeholder="Password" />
+  <button onclick="signUp()">Sign Up</button>
+  <button onclick="signIn()">Log In</button>
+  <p id="msg"></p>
+</div>
+
+<script>
+  const supabaseUrl = 'https://xklymcwecsmadfnrpmgu.supabase.co'
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhrbHltY3dlY3NtYWRmbnJwbWd1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1NzcwNTgsImV4cCI6MjA4NDE1MzA1OH0.zXxIwWo8i9TN41SSvQRIF87k2HM7dNxwQ1O31EltCJo'
+
+  const supabaseClient = supabase.createClient(
+    supabaseUrl,
+    supabaseKey
+  )
+
+  async function signUp() {
+    const email = document.getElementById('email').value
+    const password = document.getElementById('password').value
+
+    const { error } = await supabaseClient.auth.signUp({
+      email,
+      password
+    })
+
+    document.getElementById('msg').innerText =
+      error ? error.message : 'Account created. You can now log in.'
+  }
+
+  async function signIn() {
+    const email = document.getElementById('email').value
+    const password = document.getElementById('password').value
+
+    const { error } = await supabaseClient.auth.signInWithPassword({
+      email,
+      password
+    })
+
+    if (error) {
+      document.getElementById('msg').innerText = error.message
+    } else {
+      window.location.href = 'notes.html'
+    }
+  }
+</script>
+
+</body>
+</html>
